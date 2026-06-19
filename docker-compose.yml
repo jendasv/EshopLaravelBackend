@@ -1,0 +1,44 @@
+services:
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: eshop_app
+    volumes:
+      - ./src:/var/www
+    user: "${UID:-1000}:${GID:-1000}"
+#    env_file: scr/.env
+    networks:
+      - eshop_network
+
+  webserver:
+    image: nginx:alpine
+    container_name: eshop_webserver
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www
+      - ./docker/nginx:/etc/nginx/conf.d
+    depends_on:
+      - php
+    networks:
+      - eshop_network
+
+  db:
+    image: postgres:17-alpine
+    container_name: eshop_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: eshop
+      POSTGRES_USER: eshop
+      POSTGRES_PASSWORD: secret
+    volumes:
+      - ./docker/postgres/data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - eshop_network
+
+networks:
+  eshop_network:
+    driver: bridge
