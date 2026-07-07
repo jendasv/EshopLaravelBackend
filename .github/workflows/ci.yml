@@ -25,3 +25,7 @@ jobs:
       - name: Run PHPStan
         working-directory: ./src
         run: vendor/bin/phpstan analyse -c phpstan.neon
+
+      - name: Run PHPCSfixer check
+        working-directory: ./src
+        run: vendor/bin/php-cs-fixer fix --dry-run --diff
