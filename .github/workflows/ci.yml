@@ -11,6 +11,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Check PHP version
+        working-directory: ./src
+        run: php -v && composer check-platform-reqs
+
       - name: Install dependencies
         working-directory: ./src
         run: composer install --prefer-dist --no-progress
