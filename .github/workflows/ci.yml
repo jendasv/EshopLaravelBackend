@@ -22,3 +22,6 @@ jobs:
         working-directory: ./src
         run: composer install --prefer-dist --no-progress
 
+      - name: Run PHPStan
+        working-directory: ./src
+        run: vendor/bin/phpstan analyse -c phpstan.neon

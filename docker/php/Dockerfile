@@ -18,6 +18,9 @@ RUN apt-get update && apt-get install -y \
         mbstring \
         pcntl
 
+# custom PHP settings
+RUN echo "memory_limit=512M" > /usr/local/etc/php/conf.d/zz-memory-limit.ini
+
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
